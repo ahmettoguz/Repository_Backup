@@ -2,7 +2,7 @@ import os
 import requests
 from datetime import datetime
 
-from credentials import  TOKEN
+from src.module.credentials import TOKEN
 
 def getRepositories():
     url = 'https://api.github.com/user/repos'

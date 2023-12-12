@@ -12,6 +12,8 @@ output="ignoreRepo = ["
 for index in "${!repoArray[@]}"; do
     repo="${repoArray[index]}"
 
+    echo "Ignored repository: $repo"
+
     if [ $index -eq 0 ]; then
         output+=" '$repo' "
     else
@@ -21,6 +23,6 @@ done
 
 output+="]"
 
-echo $output > ./src/ignore.py
+echo $output > ./src/module/ignore.py
 
 echo "Ignore file is saved successfully."
