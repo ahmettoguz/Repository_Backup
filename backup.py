@@ -3,6 +3,15 @@ import requests
 from datetime import datetime
 
 from src.module.credentials import TOKEN
+from src.module.ignore import ignoreRepo
+
+def isRepoIgnored(currentRepo):
+    for ignored in ignoreRepo:
+        if ignored == currentRepo:
+            print(f"\nRepository named {currentRepo} is ignored.")
+            return True
+    return False
+
 
 def getRepositories():
     url = 'https://api.github.com/user/repos'
@@ -33,6 +42,11 @@ def saveRepositories(repositories, mainFolderPath):
 
     for repo in repositories:
         repo_name = repo['name']
+
+        # check ignored repositories
+        if isRepoIgnored(repo_name):
+            continue
+
         repo_url = repo.get('clone_url')
         is_private = repo.get('private', False)
         clone_directory = '/private' if is_private else '/public'
@@ -110,7 +124,7 @@ def main():
     
     # check repository count
     if(repositoryCounts['total_count'] == 0):
-        print("Total repository count is 0. Please check token.")        
+        print("Total repository count is 0. Please check token from: https://github.com/settings/tokens")        
         exit(0)
 
     # display summary output and get approval
