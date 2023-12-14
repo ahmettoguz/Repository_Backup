@@ -3,12 +3,16 @@ import requests
 from datetime import datetime
 
 from src.module.credentials import TOKEN
-from src.module.ignore import ignoreRepo
+from src.module.ignore import ignoreRepoList
+
+ignoredRepoCount = 0
 
 def isRepoIgnored(currentRepo):
-    for ignored in ignoreRepo:
+    global ignoredRepoCount
+    for ignored in ignoreRepoList:
         if ignored == currentRepo:
-            print(f"\nRepository named {currentRepo} is ignored.")
+            ignoredRepoCount += 1
+            print(f"\n--- Repository named {currentRepo} is ignored.")
             return True
     return False
 
@@ -108,7 +112,8 @@ def writeSumFile(mainFolderPath, repositoryCounts):
                 f"Repository Backup Folder Size: {backupFolderSize}\n" \
                 f"Total Repositories: {repositoryCounts['total_count']}\n" \
                 f"Public Repositories: {repositoryCounts['public_count']}\n" \
-                f"Private Repositories: {repositoryCounts['private_count']}"
+                f"Private Repositories: {repositoryCounts['private_count']}\n" \
+                f"Ignored Repositories: {ignoredRepoCount} -> {ignoreRepoList}" 
     
     with open(mainFolderPath + '/summary/summary.txt', 'w') as file:
         file.write(summaryOutput)
@@ -131,7 +136,8 @@ def main():
     approvalOutput = f"\n---\nStatistics of the repositories:\n\n" \
                 f"Total Repositories: {repositoryCounts['total_count']}\n" \
                 f"Public Repositories: {repositoryCounts['public_count']}\n" \
-                f"Private Repositories: {repositoryCounts['private_count']}"
+                f"Private Repositories: {repositoryCounts['private_count']}\n" \
+                f"Ignored Repositories: {len(ignoreRepoList)}"
     print(approvalOutput)
     user_input = input("Do you want to backup github repositories? (y/n): ").lower()
     if user_input != "y":

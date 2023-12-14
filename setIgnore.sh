@@ -6,7 +6,7 @@ read repoNames
 # Set IFS to comma to split the input string
 IFS=', ' read -ra repoArray <<< "$repoNames"
 
-output="ignoreRepo = ["
+output="ignoreRepoList = ["
 
 # Print each repository name
 for index in "${!repoArray[@]}"; do
