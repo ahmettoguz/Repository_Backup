@@ -1,5 +1,6 @@
 import os
 import requests
+import msvcrt
 from datetime import datetime
 
 from src.module.credentials import TOKEN
@@ -118,6 +119,12 @@ def writeSumFile(mainFolderPath, repositoryCounts):
     with open(mainFolderPath + '/summary/summary.txt', 'w') as file:
         file.write(summaryOutput)
 
+def pressAnyKeyExit():
+    print("Press any key to exit...")
+    while True:
+            if msvcrt.kbhit():
+                exit(0)
+
 def main():
     mainFolderPath = './repositoryBackup'
 
@@ -129,8 +136,8 @@ def main():
     
     # check repository count
     if(repositoryCounts['total_count'] == 0):
-        print("Total repository count is 0. Please check token from: https://github.com/settings/tokens")        
-        exit(0)
+        print("Total repository count is 0. Please check token from: https://github.com/settings/tokens")
+        pressAnyKeyExit()
 
     # display summary output and get approval
     approvalOutput = f"\n---\nStatistics of the repositories:\n\n" \
@@ -155,5 +162,7 @@ def main():
     print("\n---")
     print("Backup process is done")
     print("Backup size is :" , getFolderSize('./repositoryBackup'))
+    
+    pressAnyKeyExit()
 
 main()
