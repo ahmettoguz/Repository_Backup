@@ -88,7 +88,10 @@ def getFolderSize(folder_path):
     for dirpath, dirnames, filenames in os.walk(folder_path):
         for filename in filenames:
             filepath = os.path.join(dirpath, filename)
-            total_size += os.path.getsize(filepath)
+            try:
+                total_size += os.path.getsize(filepath)
+            except:
+                pass
     
     return format_size(total_size)
 
